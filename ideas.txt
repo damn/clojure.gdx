@@ -1,0 +1,11 @@
+
+;; getters
+
+; => make it Ilookup and use keyword access!!!
+; even case statement is fine we have limited options ....
+
+
+;; setters => use associative stuff in the background?
+; but its not immutable ....
+; => make it immutable  ?! :D:D:D:D:D:!
+
