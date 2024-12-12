@@ -16,6 +16,11 @@
   [(.x (.position camera))
    (.y (.position camera))])
 
+(defn combined
+  "The combined projection and view matrix."
+  [^Camera camera]
+  (.combined camera))
+
 (defn frustum [^Camera camera]
   (.frustum camera))
 
