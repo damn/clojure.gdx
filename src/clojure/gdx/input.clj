@@ -18,4 +18,4 @@
   (.isKeyPressed Gdx/input (k->input-key k)))
 
 (defn set-processor [input-processor]
-  (.setInputProcessor Gdx/input processor))
+  (.setInputProcessor Gdx/input input-processor))
