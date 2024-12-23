@@ -1,7 +1,12 @@
 (ns clojure.gdx
+  "Bindings for core LibGDX components, providing simplified access
+  to application, audio, graphics, input, and networking systems."
   (:import (com.badlogic.gdx Gdx)))
 
-(defn initialize []
+(defn bind-gdx-components
+  "Creates global bindings for core LibGDX components in the current namespace,
+  simplifying access to application, audio, graphics, input, and networking systems."
+  []
   (def app      Gdx/app)
   (def audio    Gdx/audio)
   (def files    Gdx/files)
