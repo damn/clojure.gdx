@@ -1,4 +1,4 @@
-(ns clojure.gdx.app
+(ns clojure.gdx.application
   "An Application is the main entry point of your project. It sets up a window and rendering surface and manages the different aspects of your application, namely Graphics, Audio, Input and Files. Think of an Application being equivalent to Swing's JFrame or Android's Activity.
 
   An application can be an instance of any of the following:
@@ -27,19 +27,19 @@
   The Application also has a set of methods that you can use to query specific information such as the operating system the application is currently running on and so forth. This allows you to have operating system dependent code paths. It is however not recommended to use these facilities.
 
   The Application also has a simple logging method which will print to standard out on the desktop and to logcat on Android."
-  (:import (com.badlogic.gdx Gdx)))
+  (:import (com.badlogic.gdx Application)))
 
 (defn exit
   "Schedule an exit from the application. On android, this will cause a call to pause() and dispose() some time in the future, it will not immediately finish your application. On iOS this should be avoided in production as it breaks Apples guidelines"
-  []
-  (.exit Gdx/app))
+  [application]
+  (Application/.exit application))
 
-(defmacro post-runnable
+(defn post-runnable
   "Posts a Runnable on the main loop thread. In a multi-window application, the Gdx.graphics and Gdx.input values may be unpredictable at the time the Runnable is executed. If graphics or input are needed, they can be copied to a variable to be used in the Runnable. For example:
 
   final Graphics graphics = Gdx.graphics;
 
   Parameters:
   runnable - the runnable."
-  [& exprs]
-  `(.postRunnable Gdx/app (fn [] ~@exprs)))
+  [application runnable]
+  (Application/.postRunnable application runnable))
