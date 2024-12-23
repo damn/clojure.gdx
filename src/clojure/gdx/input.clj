@@ -7,28 +7,28 @@
 
   The class also offers methods to use (and test for the presence of) other input systems like vibration, compass, on-screen keyboards, and cursor capture. Support for simple input dialogs is also provided. "
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
-  (:import (com.badlogic.gdx Gdx)))
+  (:import (com.badlogic.gdx Input)))
 
 (defn x
   "The x coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first pointer in screen coordinates. The screen origin is the top left corner."
-  []
-  (.getX Gdx/input))
+  [input]
+  (Input/.getX input))
 
 (defn y
   "The y coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first pointer in screen coordinates. The screen origin is the top left corner."
-  []
-  (.getY Gdx/input))
+  [input]
+  (Input/.getY input))
 
 (defn button-just-pressed?
   "Returns whether a given button has just been pressed. Button constants can be found in Input.Buttons. On Android only the Buttons#LEFT constant is meaningful before version 4.0. On WebGL (GWT), only LEFT, RIGHT and MIDDLE buttons are supported."
-  [b]
-  (.isButtonJustPressed Gdx/input (k->input-button b)))
+  [input b]
+  (Input/.isButtonJustPressed input (k->input-button b)))
 
-(defn key-just-pressed? [k]
-  (.isKeyJustPressed Gdx/input (k->input-key k)))
+(defn key-just-pressed? [input k]
+  (Input/.isKeyJustPressed input (k->input-key k)))
 
-(defn key-pressed? [k]
-  (.isKeyPressed Gdx/input (k->input-key k)))
+(defn key-pressed? [input k]
+  (Input/.isKeyPressed input (k->input-key k)))
 
-(defn set-processor [input-processor]
-  (.setInputProcessor Gdx/input input-processor))
+(defn set-processor [input input-processor]
+  (Input/.setInputProcessor input input-processor))
