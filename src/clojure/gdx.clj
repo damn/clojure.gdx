@@ -6,7 +6,7 @@
            (com.badlogic.gdx.files FileHandle)
            (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
-           (com.badlogic.gdx.math MathUtils Vector2)
+           (com.badlogic.gdx.math MathUtils Vector2 Circle Intersector Rectangle)
            (com.badlogic.gdx.utils Disposable ScreenUtils)
            (com.badlogic.gdx.utils.viewport FitViewport Viewport)))
 
@@ -184,3 +184,21 @@
   The default implementation only calls apply(boolean)."
   [viewport w h & {:keys [center-camera?]}]
   (Viewport/.update viewport w h (boolean center-camera?)))
+
+(defmulti overlaps? (fn [a b] [(class a) (class b)]))
+
+(defmethod overlaps? [Circle Circle]
+  [^Circle a ^Circle b]
+  (Intersector/overlaps a b))
+
+(defmethod overlaps? [Rectangle Rectangle]
+  [^Rectangle a ^Rectangle b]
+  (Intersector/overlaps a b))
+
+(defmethod overlaps? [Rectangle Circle]
+  [^Rectangle rect ^Circle circle]
+  (Intersector/overlaps circle rect))
+
+(defmethod overlaps? [Circle Rectangle]
+  [^Circle circle ^Rectangle rect]
+  (Intersector/overlaps circle rect))
