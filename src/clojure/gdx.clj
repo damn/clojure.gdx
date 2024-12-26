@@ -4,6 +4,7 @@
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.graphics OrthographicCamera)
            (com.badlogic.gdx.graphics.g2d SpriteBatch)
+           (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
 
 (defn context []
@@ -75,3 +76,12 @@
 
 (defn orthographic-camera []
   (OrthographicCamera.))
+
+(defn equal? [a b]
+  (MathUtils/isEqual a b))
+
+(defn clamp [value min max]
+  (MathUtils/clamp (float value) (float min) (float max)))
+
+(defn degree->radians [degree]
+  (* MathUtils/degreesToRadians (float degree)))
