@@ -3,6 +3,16 @@
   (:refer-clojure :exclude [load type])
   (:import (com.badlogic.gdx.assets AssetManager)))
 
+(def ^:private asset-type-class-map
+  {:sound   com.badlogic.gdx.audio.Sound
+   :texture com.badlogic.gdx.graphics.Texture})
+
+(defn- asset-type->class [k]
+  (get asset-type-class-map k))
+
+(defn- class->asset-type [class]
+  (some (fn [[k v]] (when (= v class) k)) asset-type-class-map))
+
 (defn manager
   "Creates a new AssetManager with all default loaders."
   ^AssetManager []
@@ -11,11 +21,6 @@
       (if (AssetManager/.contains this path)
         (AssetManager/.get this path)
         (throw (IllegalArgumentException. (str "Asset cannot be found: " path)))))))
-
-(defn- asset-type->class [k]
-  (case k
-    :sound   com.badlogic.gdx.audio.Sound
-    :texture com.badlogic.gdx.graphics.Texture))
 
 (defn load
   "Adds the given asset to the loading queue of the AssetManager."
@@ -31,7 +36,7 @@
   "Returns:
   the type of a loaded asset. "
   [manager asset-name]
-  (asset-type->class (AssetManager/.getAssetType manager asset-name)))
+  (class->asset-type (AssetManager/.getAssetType manager asset-name)))
 
 (defn names
   "the file names of all loaded assets."
