@@ -42,8 +42,3 @@
   "the file names of all loaded assets."
   [manager]
   (AssetManager/.getAssetNames manager))
-
-(defn dispose
-  "Disposes all assets in the manager and stops all asynchronous loading."
-  [manager]
-  (AssetManager/.dispose manager))
