@@ -6,7 +6,7 @@
            (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
-           (com.badlogic.gdx.utils Disposable)))
+           (com.badlogic.gdx.utils Disposable ScreenUtils)))
 
 (defn context []
   {:app      Gdx/app
@@ -152,3 +152,6 @@
 
 (defn draw-pixel [^Pixmap pixmap x y]
   (.drawPixel pixmap x y))
+
+(defn clear-screen [color]
+  (ScreenUtils/clear color))
