@@ -3,7 +3,7 @@
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
-           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap)
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
