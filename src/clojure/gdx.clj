@@ -1,10 +1,7 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
-  (:import (com.badlogic.gdx Gdx
-                             Application
-                             Files
-                             Graphics
-                             Input)))
+  (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
+           (com.badlogic.gdx.audio Sound)))
 
 (defn context []
   {:app      Gdx/app
@@ -57,3 +54,11 @@
 
 (defn set-input-processor [context input-processor]
   (Input/.setInputProcessor (:input context) input-processor))
+
+(defn play
+  "Plays the sound. If the sound is already playing, it will be played again, concurrently.
+
+  Returns:
+  the id of the sound instance if successful, or -1 on failure."
+  [sound]
+  (Sound/.play sound))
