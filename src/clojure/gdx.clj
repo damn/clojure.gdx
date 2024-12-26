@@ -4,8 +4,8 @@
            (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
-           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format)
-           (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format Texture)
+           (com.badlogic.gdx.graphics.g2d Batch SpriteBatch TextureRegion)
            (com.badlogic.gdx.math MathUtils Vector2 Circle Intersector Rectangle)
            (com.badlogic.gdx.utils Disposable ScreenUtils)
            (com.badlogic.gdx.utils.viewport FitViewport Viewport)))
@@ -202,3 +202,22 @@
 (defmethod overlaps? [Circle Rectangle]
   [^Circle circle ^Rectangle rect]
   (Intersector/overlaps circle rect))
+
+(defn texture-region
+  ([^Texture texture]
+   (TextureRegion. texture))
+  ([^Texture texture x y w h]
+   (TextureRegion. texture (int x) (int y) (int w) (int h))))
+
+(defn ->texture-region
+  "Constructs a region with the same texture as the specified region and sets the coordinates relative to the specified region.
+
+  Parameters:
+  width - The width of the texture region. May be negative to flip the sprite when drawn.
+  height - The height of the texture region. May be negative to flip the sprite when drawn. "
+  [^TextureRegion texture-region x y w h]
+  (TextureRegion. texture-region (int x) (int y) (int w) (int h)))
+
+(defn dimensions [^TextureRegion texture-region]
+  [(.getRegionWidth  texture-region)
+   (.getRegionHeight texture-region)])
