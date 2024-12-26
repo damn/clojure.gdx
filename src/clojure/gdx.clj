@@ -2,7 +2,8 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
-           (com.badlogic.gdx.graphics Color Colors OrthographicCamera)
+           (com.badlogic.gdx.files FileHandle)
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
@@ -142,3 +143,12 @@
   the previous color associated with name, or null if there was no mapping for name ."
   [name-str color]
   (Colors/put name-str color))
+
+(defn pixmap
+  ([^FileHandle file-handle]
+   (Pixmap. file-handle))
+  ([width height ^Pixmap$Format format]
+   (Pixmap. (int width) (int height) format)))
+
+(defn draw-pixel [^Pixmap pixmap x y]
+  (.drawPixel pixmap x y))
