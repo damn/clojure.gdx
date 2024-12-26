@@ -1,12 +1,14 @@
 (ns clojure.gdx
-  (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
-  (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
+  (:require [clojure.gdx.interop :refer [k->input-button k->input-key k->viewport-field]])
+  (:import (clojure.lang ILookup)
+           (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
            (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
-           (com.badlogic.gdx.math MathUtils)
-           (com.badlogic.gdx.utils Disposable ScreenUtils)))
+           (com.badlogic.gdx.math MathUtils Vector2)
+           (com.badlogic.gdx.utils Disposable ScreenUtils)
+           (com.badlogic.gdx.utils.viewport FitViewport Viewport)))
 
 (defn context []
   {:app      Gdx/app
@@ -155,3 +157,30 @@
 
 (defn clear-screen [color]
   (ScreenUtils/clear color))
+
+(defn fit-viewport [width height camera]
+  (proxy [FitViewport ILookup] [width height camera]
+    (valAt
+      ([key]
+       (k->viewport-field this key))
+      ([key _not-found]
+       (k->viewport-field this key)))))
+
+(defn unproject
+  "Transforms the specified screen coordinate to world coordinates.
+
+  Returns:
+  The vector that was passed in, transformed to world coordinates.
+  See Also:
+
+  Camera.unproject(Vector3)"
+  [viewport x y]
+  (let [v2 (Viewport/.unproject viewport (Vector2. x y))]
+    [(.x v2) (.y v2)]))
+
+(defn resize
+  "Configures this viewport's screen bounds using the specified screen size and calls apply(boolean). Typically called from ApplicationListener.resize(int, int) or Screen.resize(int, int).
+
+  The default implementation only calls apply(boolean)."
+  [viewport w h & {:keys [center-camera?]}]
+  (Viewport/.update viewport w h (boolean center-camera?)))

@@ -2,7 +2,8 @@
   (:import (com.badlogic.gdx Input$Buttons
                              Input$Keys)
            (com.badlogic.gdx.graphics Color)
-           (com.badlogic.gdx.utils Align)))
+           (com.badlogic.gdx.utils Align)
+           (com.badlogic.gdx.utils.viewport Viewport)))
 
 (comment
 
@@ -282,3 +283,13 @@
     :center Align/center
     :left   Align/left
     :right  Align/right))
+
+(defn k->viewport-field [^Viewport vp k]
+  (case k
+    :width             (.getWorldWidth      vp)
+    :height            (.getWorldHeight     vp)
+    :camera            (.getCamera          vp)
+    :left-gutter-width (.getLeftGutterWidth vp)
+    :right-gutter-x    (.getRightGutterX    vp)
+    :top-gutter-height (.getTopGutterHeight vp)
+    :top-gutter-y      (.getTopGutterY      vp)))
