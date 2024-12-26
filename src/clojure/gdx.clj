@@ -2,7 +2,7 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
-           (com.badlogic.gdx.graphics Color OrthographicCamera)
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera)
            (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
@@ -129,3 +129,16 @@
                scale-x
                scale-y
                rotation))
+
+(defn def-color
+  "A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the BitmapFontCache class uses this class to retrieve colors and the user can define his own colors.
+
+  Convenience method to add a color with its name. The invocation of this method is equivalent to the expression Colors.getColors().put(name, color)
+
+  Parameters:
+  name - the name of the color
+  color - the color
+  Returns:
+  the previous color associated with name, or null if there was no mapping for name ."
+  [name-str color]
+  (Colors/put name-str color))
