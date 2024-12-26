@@ -1,10 +1,11 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
-  (:import (com.badlogic.gdx Gdx
-                             Application
-                             Files
-                             Graphics
-                             Input)))
+  (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
+           (com.badlogic.gdx.audio Sound)
+           (com.badlogic.gdx.graphics OrthographicCamera)
+           (com.badlogic.gdx.graphics.g2d SpriteBatch)
+           (com.badlogic.gdx.math MathUtils)
+           (com.badlogic.gdx.utils Disposable)))
 
 (defn context []
   {:app      Gdx/app
@@ -57,3 +58,30 @@
 
 (defn set-input-processor [context input-processor]
   (Input/.setInputProcessor (:input context) input-processor))
+
+(defn play
+  "Plays the sound. If the sound is already playing, it will be played again, concurrently.
+
+  Returns:
+  the id of the sound instance if successful, or -1 on failure."
+  [sound]
+  (Sound/.play sound))
+
+(defn sprite-batch
+  "Constructs a new `com.badlogic.gdx.graphics.g2d.SpriteBatch` with a size of 1000, one buffer, and the default shader."
+  []
+  (SpriteBatch.))
+
+(def dispose Disposable/.dispose)
+
+(defn orthographic-camera []
+  (OrthographicCamera.))
+
+(defn equal? [a b]
+  (MathUtils/isEqual a b))
+
+(defn clamp [value min max]
+  (MathUtils/clamp (float value) (float min) (float max)))
+
+(defn degree->radians [degree]
+  (* MathUtils/degreesToRadians (float degree)))
