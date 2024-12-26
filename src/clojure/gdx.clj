@@ -1,7 +1,8 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key k->viewport-field]])
-  (:import (clojure.lang ILookup)
+  (:import (clojure.lang IFn ILookup)
            (com.badlogic.gdx Gdx Application Files Graphics Input)
+           (com.badlogic.gdx.assets AssetManager)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
            (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format Texture)
@@ -234,3 +235,10 @@
   A texture must be disposed when it is no longer used"
   [^Pixmap pixmap]
   (Texture. pixmap))
+
+(defn asset-manager []
+  (proxy [AssetManager IFn] []
+    (invoke [^String path]
+      (if (AssetManager/.contains this path)
+        (AssetManager/.get this path)
+        (throw (IllegalArgumentException. (str "Asset cannot be found: " path)))))))

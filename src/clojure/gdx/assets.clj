@@ -13,15 +13,6 @@
 (defn- class->asset-type [class]
   (some (fn [[k v]] (when (= v class) k)) asset-type-class-map))
 
-(defn manager
-  "Creates a new AssetManager with all default loaders."
-  ^AssetManager []
-  (proxy [AssetManager clojure.lang.IFn] []
-    (invoke [^String path]
-      (if (AssetManager/.contains this path)
-        (AssetManager/.get this path)
-        (throw (IllegalArgumentException. (str "Asset cannot be found: " path)))))))
-
 (defn load
   "Adds the given asset to the loading queue of the AssetManager."
   [manager file asset-type]
