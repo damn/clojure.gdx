@@ -2,6 +2,7 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
+           (com.badlogic.gdx.graphics OrthographicCamera)
            (com.badlogic.gdx.graphics.g2d SpriteBatch)
            (com.badlogic.gdx.utils Disposable)))
 
@@ -71,3 +72,6 @@
   (SpriteBatch.))
 
 (def dispose Disposable/.dispose)
+
+(defn orthographic-camera []
+  (OrthographicCamera.))

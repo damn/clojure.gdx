@@ -2,9 +2,6 @@
   (:refer-clojure :exclude [update])
   (:import (com.badlogic.gdx.graphics Camera OrthographicCamera)))
 
-(defn orthographic []
-  (OrthographicCamera.))
-
 (defn set-to-ortho
   "Sets this camera to an orthographic projection, centered at (viewport-width/2, viewport-height/2), with the y-axis pointing up or down."
   [camera viewport-width viewport-height & {:keys [y-down?]}]
