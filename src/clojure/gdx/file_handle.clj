@@ -1,4 +1,4 @@
-(ns clojure.gdx.files.file-handle
+(ns clojure.gdx.file-handle
   "Represents a file or directory on the filesystem, classpath, Android app storage, or Android assets directory. FileHandles are created via a Files instance. Because some of the file types are backed by composite files and may be compressed (for example, if they are in an Android .apk or are found via the classpath), the methods for extracting a path() or file() may not be appropriate for all types. Use the Reader or Stream methods here to hide these dependencies from your platform independent code."
   (:refer-clojure :exclude [list])
   (:import (com.badlogic.gdx.files FileHandle)))
