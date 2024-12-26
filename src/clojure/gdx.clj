@@ -2,7 +2,8 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
-           (com.badlogic.gdx.graphics.g2d SpriteBatch)))
+           (com.badlogic.gdx.graphics.g2d SpriteBatch)
+           (com.badlogic.gdx.utils Disposable)))
 
 (defn context []
   {:app      Gdx/app
@@ -68,3 +69,5 @@
   "Constructs a new `com.badlogic.gdx.graphics.g2d.SpriteBatch` with a size of 1000, one buffer, and the default shader."
   []
   (SpriteBatch.))
+
+(def dispose Disposable/.dispose)
