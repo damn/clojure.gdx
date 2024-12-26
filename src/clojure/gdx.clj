@@ -2,8 +2,9 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
-           (com.badlogic.gdx.graphics OrthographicCamera)
-           (com.badlogic.gdx.graphics.g2d SpriteBatch)
+           (com.badlogic.gdx.files FileHandle)
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap)
+           (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
 
@@ -85,3 +86,69 @@
 
 (defn degree->radians [degree]
   (* MathUtils/degreesToRadians (float degree)))
+
+(def ^Color black Color/BLACK)
+(def ^Color white Color/WHITE)
+
+(defn color
+  ([r g b]
+   (color r g b 1))
+  ([r g b a]
+   (Color. (float r) (float g) (float b) (float a))))
+
+(defn set-projection-matrix
+  "Sets the projection matrix to be used by this Batch. If this is called inside a begin()/end() block, the current batch is flushed to the gpu."
+  [batch projection]
+  (Batch/.setProjectionMatrix batch projection))
+
+(defn begin
+  "Sets up the Batch for drawing. This will disable depth buffer writing. It enables blending and texturing. If you have more texture units enabled than the first one you have to disable them before calling this. Uses a screen coordinate system by default where everything is given in pixels. You can specify your own projection and modelview matrices via setProjectionMatrix(Matrix4) and setTransformMatrix(Matrix4)."
+  [batch]
+  (Batch/.begin batch))
+
+(defn end
+  "Finishes off rendering. Enables depth writes, disables blending and texturing. Must always be called after a call to begin()"
+  [batch]
+  (Batch/.end batch))
+
+(defn set-color
+  "Sets the color used to tint images when they are added to the Batch. Default is Color.WHITE."
+  [batch color]
+  (Batch/.setColor batch color))
+
+(defn draw
+  "Draws a rectangle with the bottom left corner at x,y and stretching the region to cover the given width and height. The rectangle is offset by origin-x, origin-y relative to the origin. Scale specifies the scaling factor by which the rectangle should be scaled around origin-x, origin-y. Rotation specifies the angle of counter clockwise rotation of the rectangle around origin-x, originy."
+  [batch texture-region & {:keys [x y origin-x origin-y width height scale-x scale-y rotation]}]
+  (Batch/.draw batch
+               texture-region
+               x
+               y
+               origin-x
+               origin-y
+               width
+               height
+               scale-x
+               scale-y
+               rotation))
+
+(defn def-color
+  "A general purpose class containing named colors that can be changed at will. For example, the markup language defined by the BitmapFontCache class uses this class to retrieve colors and the user can define his own colors.
+
+  Convenience method to add a color with its name. The invocation of this method is equivalent to the expression Colors.getColors().put(name, color)
+
+  Parameters:
+  name - the name of the color
+  color - the color
+  Returns:
+  the previous color associated with name, or null if there was no mapping for name ."
+  [name-str color]
+  (Colors/put name-str color))
+
+(defn pixmap
+  ([^FileHandle file-handle]
+   (Pixmap. file-handle))
+  ([width height ^Pixmap$Format format]
+   (Pixmap. (int width) (int height) format)))
+
+(defn draw-pixel [^Pixmap pixmap x y]
+  (.drawPixel pixmap x y))
