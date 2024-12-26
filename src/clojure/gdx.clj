@@ -1,12 +1,14 @@
 (ns clojure.gdx
-  (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
-  (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
+  (:require [clojure.gdx.interop :refer [k->input-button k->input-key k->viewport-field]])
+  (:import (clojure.lang ILookup)
+           (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
-           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap)
-           (com.badlogic.gdx.graphics.g2d Batch SpriteBatch)
-           (com.badlogic.gdx.math MathUtils)
-           (com.badlogic.gdx.utils Disposable)))
+           (com.badlogic.gdx.graphics Color Colors OrthographicCamera Pixmap Pixmap$Format Texture)
+           (com.badlogic.gdx.graphics.g2d Batch SpriteBatch TextureRegion)
+           (com.badlogic.gdx.math MathUtils Vector2 Circle Intersector Rectangle)
+           (com.badlogic.gdx.utils Disposable ScreenUtils)
+           (com.badlogic.gdx.utils.viewport FitViewport Viewport)))
 
 (defn context []
   {:app      Gdx/app
@@ -152,3 +154,83 @@
 
 (defn draw-pixel [^Pixmap pixmap x y]
   (.drawPixel pixmap x y))
+
+(defn clear-screen [color]
+  (ScreenUtils/clear color))
+
+(defn fit-viewport [width height camera]
+  (proxy [FitViewport ILookup] [width height camera]
+    (valAt
+      ([key]
+       (k->viewport-field this key))
+      ([key _not-found]
+       (k->viewport-field this key)))))
+
+(defn unproject
+  "Transforms the specified screen coordinate to world coordinates.
+
+  Returns:
+  The vector that was passed in, transformed to world coordinates.
+  See Also:
+
+  Camera.unproject(Vector3)"
+  [viewport x y]
+  (let [v2 (Viewport/.unproject viewport (Vector2. x y))]
+    [(.x v2) (.y v2)]))
+
+(defn resize
+  "Configures this viewport's screen bounds using the specified screen size and calls apply(boolean). Typically called from ApplicationListener.resize(int, int) or Screen.resize(int, int).
+
+  The default implementation only calls apply(boolean)."
+  [viewport w h & {:keys [center-camera?]}]
+  (Viewport/.update viewport w h (boolean center-camera?)))
+
+(defmulti overlaps? (fn [a b] [(class a) (class b)]))
+
+(defmethod overlaps? [Circle Circle]
+  [^Circle a ^Circle b]
+  (Intersector/overlaps a b))
+
+(defmethod overlaps? [Rectangle Rectangle]
+  [^Rectangle a ^Rectangle b]
+  (Intersector/overlaps a b))
+
+(defmethod overlaps? [Rectangle Circle]
+  [^Rectangle rect ^Circle circle]
+  (Intersector/overlaps circle rect))
+
+(defmethod overlaps? [Circle Rectangle]
+  [^Circle circle ^Rectangle rect]
+  (Intersector/overlaps circle rect))
+
+(defn texture-region
+  ([^Texture texture]
+   (TextureRegion. texture))
+  ([^Texture texture x y w h]
+   (TextureRegion. texture (int x) (int y) (int w) (int h))))
+
+(defn ->texture-region
+  "Constructs a region with the same texture as the specified region and sets the coordinates relative to the specified region.
+
+  Parameters:
+  width - The width of the texture region. May be negative to flip the sprite when drawn.
+  height - The height of the texture region. May be negative to flip the sprite when drawn. "
+  [^TextureRegion texture-region x y w h]
+  (TextureRegion. texture-region (int x) (int y) (int w) (int h)))
+
+(defn dimensions [^TextureRegion texture-region]
+  [(.getRegionWidth  texture-region)
+   (.getRegionHeight texture-region)])
+
+(defn texture
+  "A texture wraps a standard OpenGL ES texture.
+
+  A texture can be managed. If the OpenGL context is lost all managed textures get invalidated. This happens when a user switches to another application or receives an incoming call. Managed textures get reloaded automatically.
+
+  A texture has to be bound via the `GLTexture.bind()` method in order for it to be applied to geometry. The texture will be bound to the currently active texture unit specified via `GL20.glActiveTexture(int)`.
+
+  You can draw Pixmaps to a texture at any time. The changes will be automatically uploaded to texture memory. This is of course not extremely fast so use it with care. It also only works with unmanaged textures.
+
+  A texture must be disposed when it is no longer used"
+  [^Pixmap pixmap]
+  (Texture. pixmap))
