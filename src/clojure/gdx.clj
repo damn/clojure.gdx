@@ -1,7 +1,8 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
-           (com.badlogic.gdx.audio Sound)))
+           (com.badlogic.gdx.audio Sound)
+           (com.badlogic.gdx.graphics.g2d SpriteBatch)))
 
 (defn context []
   {:app      Gdx/app
@@ -62,3 +63,8 @@
   the id of the sound instance if successful, or -1 on failure."
   [sound]
   (Sound/.play sound))
+
+(defn sprite-batch
+  "Constructs a new `com.badlogic.gdx.graphics.g2d.SpriteBatch` with a size of 1000, one buffer, and the default shader."
+  []
+  (SpriteBatch.))
