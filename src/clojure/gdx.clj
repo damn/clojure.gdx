@@ -2,7 +2,7 @@
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]])
   (:import (com.badlogic.gdx Gdx Application Files Graphics Input)
            (com.badlogic.gdx.audio Sound)
-           (com.badlogic.gdx.graphics OrthographicCamera)
+           (com.badlogic.gdx.graphics Color OrthographicCamera)
            (com.badlogic.gdx.graphics.g2d SpriteBatch)
            (com.badlogic.gdx.math MathUtils)
            (com.badlogic.gdx.utils Disposable)))
@@ -85,3 +85,12 @@
 
 (defn degree->radians [degree]
   (* MathUtils/degreesToRadians (float degree)))
+
+(def ^Color black Color/BLACK)
+(def ^Color white Color/WHITE)
+
+(defn color
+  ([r g b]
+   (color r g b 1))
+  ([r g b a]
+   (Color. (float r) (float g) (float b) (float a))))
