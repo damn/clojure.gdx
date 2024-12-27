@@ -14,43 +14,43 @@
 (defn context
   "Returns a map of the libgdx context. Call after application `create`."
   []
-  {:app      Gdx/app
-   :audio    Gdx/audio
-   :files    Gdx/files
-   :gl       Gdx/gl
-   :gl20     Gdx/gl20
-   :gl30     Gdx/gl30
-   :gl31     Gdx/gl31
-   :gl32     Gdx/gl32
-   :graphics Gdx/graphics
-   :input    Gdx/input
-   :net      Gdx/net})
+  {::app      Gdx/app
+   ::audio    Gdx/audio
+   ::files    Gdx/files
+   ::gl       Gdx/gl
+   ::gl20     Gdx/gl20
+   ::gl30     Gdx/gl30
+   ::gl31     Gdx/gl31
+   ::gl32     Gdx/gl32
+   ::graphics Gdx/graphics
+   ::input    Gdx/input
+   ::net      Gdx/net})
 
 (defn exit
   "Schedule an exit from the application. On android, this will cause a call to `pause` and `dispose` some time in the future,
   it will not immediately finish your application. On iOS this should be avoided in production as it breaks Apples guidelines."
   [context]
-  (Application/.exit (:app context)))
+  (Application/.exit (::app context)))
 
 (defn post-runnable
   "Posts a Runnable on the main loop thread. In a multi-window application, the [context] values may be unpredictable at the time the Runnable is executed. If graphics or input are needed, they should be bound to a variable to be used in the Runnable."
   [context runnable]
-  (Application/.postRunnable (:app context) runnable))
+  (Application/.postRunnable (::app context) runnable))
 
 (defn internal-file
   "Path relative to the asset directory on Android and to the application's root directory on the desktop. On the desktop, if the file is not found, then the classpath is checked. This enables files to be found when using JWS or applets. Internal files are always readonly."
   [context file]
-  (Files/.internal (:files context) file))
+  (Files/.internal (::files context) file))
 
 (defn delta-time
   "The time span between the current frame and the last frame in seconds."
   [context]
-  (Graphics/.getDeltaTime (:graphics context)))
+  (Graphics/.getDeltaTime (::graphics context)))
 
 (defn frames-per-second
   "The average number of frames per second."
   [context]
-  (Graphics/.getFramesPerSecond (:graphics context)))
+  (Graphics/.getFramesPerSecond (::graphics context)))
 
 (defn cursor
   "Create a new cursor represented by the Pixmap. The Pixmap must be in RGBA8888 format, width & height must be powers-of-two greater than zero (not necessarily equal) and of a certain minimum size (32x32 is a safe bet), and alpha transparency must be single-bit (i.e., 0x00 or 0xFF only). This function returns a Cursor object that can be set as the system cursor by calling setCursor(Cursor) .
@@ -67,7 +67,7 @@
 
   a cursor object that can be used by calling setCursor(Cursor) or null if not supported"
   [context pixmap hotspot-x hotspot-y]
-  (Graphics/.newCursor (:graphics context) pixmap hotspot-x hotspot-y))
+  (Graphics/.newCursor (::graphics context) pixmap hotspot-x hotspot-y))
 
 (defn set-cursor
   "Only viable on the lwjgl-backend and on the gwt-backend. Browsers that support cursor:url() and support the png format (the pixmap is converted to a data-url of type image/png) should also support custom cursors. Will set the mouse cursor image to the image represented by the Cursor. It is recommended to call this function in the main render thread, and maximum one time per frame.
@@ -75,17 +75,17 @@
   Parameters:
   cursor - the mouse cursor as a Cursor"
   [context cursor]
-  (Graphics/.setCursor (:graphics context) cursor))
+  (Graphics/.setCursor (::graphics context) cursor))
 
 (defn input-x
   "The x coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first pointer in screen coordinates. The screen origin is the top left corner."
   [context]
-  (Input/.getX (:input context)))
+  (Input/.getX (::input context)))
 
 (defn input-y
   "The y coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first pointer in screen coordinates. The screen origin is the top left corner."
   [context]
-  (Input/.getY (:input context)))
+  (Input/.getY (::input context)))
 
 (defn button-just-pressed?
   "Returns whether a given button has just been pressed. Button constants can be found in Input.Buttons. On Android only the Buttons#LEFT constant is meaningful before version 4.0.
@@ -96,7 +96,7 @@
   Returns:
   true or false."
   [context b]
-  (Input/.isButtonJustPressed (:input context) (k->input-button b)))
+  (Input/.isButtonJustPressed (::input context) (k->input-button b)))
 
 (defn key-just-pressed?
   "Returns whether the key has just been pressed.
@@ -107,7 +107,7 @@
   Returns:
   true or false. "
   [context k]
-  (Input/.isKeyJustPressed (:input context) (k->input-key k)))
+  (Input/.isKeyJustPressed (::input context) (k->input-key k)))
 
 (defn key-pressed?
   "Returns whether the key is pressed.
@@ -118,7 +118,7 @@
   Returns:
   true or false."
   [context k]
-  (Input/.isKeyPressed (:input context) (k->input-key k)))
+  (Input/.isKeyPressed (::input context) (k->input-key k)))
 
 (defn set-input-processor
   "Sets the InputProcessor that will receive all touch and key input events. It will be called before the `ApplicationListener.render()` method each frame.
@@ -126,7 +126,7 @@
   Parameters:
   processor - the InputProcessor "
   [context input-processor]
-  (Input/.setInputProcessor (:input context) input-processor))
+  (Input/.setInputProcessor (::input context) input-processor))
 
 (defn play
   "Plays the sound. If the sound is already playing, it will be played again, concurrently.
