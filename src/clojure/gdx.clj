@@ -1,7 +1,7 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key k->viewport-field]])
   (:import (clojure.lang IFn ILookup)
-           (com.badlogic.gdx Gdx Application Files Graphics Input)
+           (com.badlogic.gdx Files Graphics Input)
            (com.badlogic.gdx.assets AssetManager)
            (com.badlogic.gdx.audio Sound)
            (com.badlogic.gdx.files FileHandle)
@@ -10,32 +10,6 @@
            (com.badlogic.gdx.math MathUtils Vector2 Circle Intersector Rectangle)
            (com.badlogic.gdx.utils Disposable ScreenUtils)
            (com.badlogic.gdx.utils.viewport FitViewport Viewport)))
-
-(defn context
-  "Returns a map of the libgdx context. Call after application `create`."
-  []
-  {::app      Gdx/app
-   ::audio    Gdx/audio
-   ::files    Gdx/files
-   ::gl       Gdx/gl
-   ::gl20     Gdx/gl20
-   ::gl30     Gdx/gl30
-   ::gl31     Gdx/gl31
-   ::gl32     Gdx/gl32
-   ::graphics Gdx/graphics
-   ::input    Gdx/input
-   ::net      Gdx/net})
-
-(defn exit
-  "Schedule an exit from the application. On android, this will cause a call to `pause` and `dispose` some time in the future,
-  it will not immediately finish your application. On iOS this should be avoided in production as it breaks Apples guidelines."
-  [context]
-  (Application/.exit (::app context)))
-
-(defn post-runnable
-  "Posts a Runnable on the main loop thread. In a multi-window application, the [context] values may be unpredictable at the time the Runnable is executed. If graphics or input are needed, they should be bound to a variable to be used in the Runnable."
-  [context runnable]
-  (Application/.postRunnable (::app context) runnable))
 
 (defn internal-file
   "Path relative to the asset directory on Android and to the application's root directory on the desktop. On the desktop, if the file is not found, then the classpath is checked. This enables files to be found when using JWS or applets. Internal files are always readonly."
