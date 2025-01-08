@@ -1,5 +1,5 @@
 (ns clojure.gdx.math.vector2
-  (:require [clojure.gdx :refer [equal?]])
+  (:require [clojure.gdx.math.utils :refer [equal?]])
   (:import (com.badlogic.gdx.math Vector2)))
 
 (defn- m-v2
