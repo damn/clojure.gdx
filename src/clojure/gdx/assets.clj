@@ -3,6 +3,15 @@
   (:refer-clojure :exclude [load type])
   (:import (com.badlogic.gdx.assets AssetManager)))
 
+(defn asset-manager
+  "Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on."
+  []
+  (proxy [AssetManager clojure.lang.IFn] []
+    (invoke [^String path]
+      (if (AssetManager/.contains this path)
+        (AssetManager/.get this path)
+        (throw (IllegalArgumentException. (str "Asset cannot be found: " path)))))))
+
 (def ^:private asset-type-class-map
   {:sound   com.badlogic.gdx.audio.Sound
    :texture com.badlogic.gdx.graphics.Texture})
