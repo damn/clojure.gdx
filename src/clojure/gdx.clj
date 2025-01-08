@@ -1,5 +1,8 @@
 (ns clojure.gdx
   (:require [clojure.gdx.interop :refer [k->input-button k->input-key]]
+            ;
+            [clojure.application]
+            [clojure.audio]
             [clojure.audio.sound]
             [clojure.files]
             [clojure.files.file-handle]
@@ -45,6 +48,15 @@
   (post-runnable [this runnable]
     (.postRunnable this runnable)))
 
+(extend-type com.badlogic.gdx.Audio
+  clojure.audio/Audio
+  (device [_ sampling-rate mono?])
+  (audio-recorder [_ sampling-rate mono?])
+  (sound [_ file-handle])
+  (music [_ file-handle])
+  (switch-output-device [_ identifier])
+  (available-output-devices [_]))
+
 (extend-type com.badlogic.gdx.files.FileHandle
   clojure.files.file-handle/FileHandle
   (list [this]
@@ -78,8 +90,35 @@
 
 (extend-type com.badlogic.gdx.audio.Sound
   clojure.audio.sound/Sound
-  (play [this]
-    (.play this)))
+  (loop
+    ([s]
+     (.loop s))
+    ([s volume]
+     (.loop s volume))
+    ([s volume pitch pan]
+     (.loop s volume pitch pan)))
+  (play
+    ([s]
+     (.play s))
+    ([s volume]
+     (.play s volume))
+    ([s volume pitch pan]
+     (.play s volume pitch pan)))
+  (resume
+    ([s]
+     (.resume s))
+    ([s id]
+     (.resume s id)))
+  (set-looping [s id looping?]
+    (.setLooping s id looping?))
+  (set-pan [s id pan volume]
+    (.setPan s id pan volume))
+  (set-pitch [s id pitch]
+    (.setPitch [s id pitch]))
+  (set-volume [s id volume]
+    (.setVolume [s id volume]))
+  (stop [s]
+    (.stop s)))
 
 (extend-type com.badlogic.gdx.utils.Disposable
   clojure.utils.disposable/Disposable
