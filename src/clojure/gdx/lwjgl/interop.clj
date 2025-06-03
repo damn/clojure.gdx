@@ -1,4 +1,4 @@
-(ns clojure.gdx.lwjgl.interop
+(ns ^:no-doc clojure.gdx.lwjgl.interop
   (:import (com.badlogic.gdx.backends.lwjgl3 Lwjgl3Application$GLDebugMessageSeverity
                                              Lwjgl3ApplicationConfiguration
                                              Lwjgl3ApplicationConfiguration$GLEmulation
