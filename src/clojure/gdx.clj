@@ -11,6 +11,7 @@
             [clojure.graphics.viewport :as viewport]
             [clojure.input :as input]
             [clojure.tiled :as tiled]
+            [clojure.utils.disposable :as disposable]
             [clojure.gdx.math-utils :as math-utils])
   (:import (clojure.lang IFn
                          ILookup)
@@ -44,6 +45,11 @@
                                    ScreenUtils
                                    SharedLibraryLoader)
            (com.badlogic.gdx.utils.viewport FitViewport)))
+
+(extend-type Disposable
+  disposable/Disposable
+  (dispose! [object]
+    (.dispose object)))
 
 (comment
 
@@ -362,8 +368,8 @@
 
 (defn- reify-texture [^Texture this]
   (reify
-    Disposable
-    (dispose [_]
+    disposable/Disposable
+    (dispose! [_]
       (.dispose this))
 
     texture/Texture
@@ -396,9 +402,9 @@
       (.load this ^String file (k->class asset-type-k)))
     (.finishLoading this)
     (reify
-      Disposable
-      (dispose [_]
-        (Disposable/.dispose this))
+      disposable/Disposable
+      (dispose! [_]
+        (.dispose this))
 
       IFn
       (invoke [_ path]
@@ -476,8 +482,8 @@
          (case k
            :sprite-batch/java-object this))
 
-      Disposable
-      (dispose [_]
+      disposable/Disposable
+      (dispose! [_]
         (.dispose this))
 
       batch/Batch
@@ -524,8 +530,8 @@
                        (case format
                          :pixmap.format/RGBA8888 Pixmap$Format/RGBA8888))]
      (reify
-       Disposable
-       (dispose [_]
+       disposable/Disposable
+       (dispose! [_]
          (.dispose this))
        ILookup
        (valAt [_ k]
@@ -723,8 +729,8 @@
 
 (defn- reify-tiled-map [^TiledMap this]
   (reify
-    Disposable
-    (dispose [_]
+    disposable/Disposable
+    (dispose! [_]
       (.dispose this))
 
     ILookup
