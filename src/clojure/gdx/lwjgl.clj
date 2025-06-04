@@ -96,7 +96,7 @@
                            (when-let [f (k config)]
                              (apply (requiring-resolve f) params)))]
     (start-application! (reify application/Listener
-                          (create!  [_]              (req-resolve-call ::create!))
+                          (create!  [_]              (req-resolve-call ::create! config))
                           (dispose! [_]              (req-resolve-call ::dispose!))
                           (render!  [_]              (req-resolve-call ::render!))
                           (resize!  [_ width height] (req-resolve-call ::resize! width height))
