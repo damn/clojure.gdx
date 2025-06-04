@@ -1,6 +1,8 @@
 (ns clojure.gdx.lwjgl
   (:require [clojure.application-listener :as application]
-            [clojure.gdx.lwjgl.interop :as i])
+            [clojure.gdx :as gdx]
+            [clojure.gdx.lwjgl.interop :as i]
+            [clojure.java.awt.taskbar :as taskbar])
   (:import (com.badlogic.gdx ApplicationListener)
            (com.badlogic.gdx.backends.lwjgl3 Lwjgl3Application
                                              Lwjgl3ApplicationConfiguration
@@ -70,8 +72,15 @@
       (application/resume! listener))))
 
 (defn start-application! [listener config]
+  (when (= (gdx/operating-system) :operating-system/mac)
+    (let [{:keys [glfw-async?
+                  dock-icon]} (:mac-os config)]
+      (when glfw-async?
+        (set-glfw-async!))
+      (when dock-icon
+        (taskbar/set-icon! dock-icon))))
   (Lwjgl3Application. (proxy-listener listener)
                       (let [obj (Lwjgl3ApplicationConfiguration.)]
-                        (doseq [[k v] config]
+                        (doseq [[k v] (dissoc config :mac-os)]
                           (i/set-application-config-key! obj k v))
                         obj)))
