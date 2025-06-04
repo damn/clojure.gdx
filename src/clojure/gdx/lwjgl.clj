@@ -1,8 +1,10 @@
 (ns clojure.gdx.lwjgl
   (:require [clojure.application-listener :as application]
+            [clojure.edn :as edn]
             [clojure.gdx :as gdx]
             [clojure.gdx.lwjgl.interop :as i]
-            [clojure.java.awt.taskbar :as taskbar])
+            [clojure.java.awt.taskbar :as taskbar]
+            [clojure.java.io :as io])
   (:import (com.badlogic.gdx ApplicationListener)
            (com.badlogic.gdx.backends.lwjgl3 Lwjgl3Application
                                              Lwjgl3ApplicationConfiguration
@@ -84,3 +86,20 @@
                         (doseq [[k v] (dissoc config :mac-os)]
                           (i/set-application-config-key! obj k v))
                         obj)))
+
+(defn -main [app-edn-path]
+  (let [config (-> app-edn-path
+                   io/resource
+                   slurp
+                   edn/read-string)
+        req-resolve-call (fn [k & params]
+                           (when-let [f (k config)]
+                             (apply (requiring-resolve f) params)))]
+    (start-application! (reify application/Listener
+                          (create!  [_]              (req-resolve-call ::create!))
+                          (dispose! [_]              (req-resolve-call ::dispose!))
+                          (render!  [_]              (req-resolve-call ::render!))
+                          (resize!  [_ width height] (req-resolve-call ::resize! width height))
+                          (pause!   [_]              (req-resolve-call ::pause!))
+                          (resume!  [_]              (req-resolve-call ::resume!)))
+                        (::config config))))
