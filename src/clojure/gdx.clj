@@ -41,9 +41,7 @@
                                   Vector3)
            (com.badlogic.gdx.utils Align
                                    Disposable
-                                   Os
-                                   ScreenUtils
-                                   SharedLibraryLoader)
+                                   ScreenUtils)
            (com.badlogic.gdx.utils.viewport FitViewport)))
 
 (extend-type Disposable
@@ -651,10 +649,6 @@
 
 (defn clear-screen! []
   (ScreenUtils/clear Color/BLACK))
-
-(defn operating-system []
-  (let [os SharedLibraryLoader/os]
-    (cond (= os Os/MacOsX) :operating-system/mac)))
 
 (defprotocol GetMapProperties
   (get-map-properties ^MapProperties [_]))
