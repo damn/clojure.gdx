@@ -72,3 +72,19 @@
 
 (defn toggle-visible! [actor]
   (set-visible! actor (not (visible? actor))))
+
+(defmulti build :actor/type)
+
+(defn build? ^Actor [actor-declaration]
+  (try
+   (cond
+    (instance? Actor actor-declaration) actor-declaration
+    (map? actor-declaration) (build actor-declaration)
+    (nil? actor-declaration) nil
+    :else (throw (ex-info "Cannot find constructor"
+                          {:instance-actor? (instance? Actor actor-declaration)
+                           :map? (map? actor-declaration)})))
+   (catch Throwable t
+     (throw (ex-info "Cannot create-actor"
+                     {:actor-declaration actor-declaration}
+                     t)))))
