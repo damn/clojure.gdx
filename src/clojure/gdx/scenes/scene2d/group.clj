@@ -2,8 +2,8 @@
   (:require [clojure.gdx.scenes.scene2d.actor :as actor])
   (:import (com.badlogic.gdx.scenes.scene2d Group)))
 
-(defn add! [^Group group actor]
-  (.addActor group actor))
+(defn add! [group actor-or-decl]
+  (Group/.addActor group (actor/build? actor-or-decl)))
 
 (defn find-actor [^Group group name]
   (.findActor group name))
@@ -21,3 +21,7 @@
                 (apply distinct? ids)) ; TODO could check @ add
             (str "Actor ids are not distinct: " (vec ids)))
     (first (filter #(= id (actor/user-object %)) actors))))
+
+(defn set-opts! [group opts]
+  (run! (partial add! group) (:actors opts))
+  (actor/set-opts! group opts))

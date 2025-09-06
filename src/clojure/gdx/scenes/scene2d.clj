@@ -18,8 +18,9 @@
        ([id# not-found#]
         (or (group/find-actor-with-id ~'this id#) not-found#)))))
 
-(defn group []
-  (proxy-group Group []))
+(defn group [opts]
+  (doto (proxy-group Group [])
+    (group/set-opts! opts)))
 
 (defn stage [viewport batch]
   (proxy [Stage ILookup] [viewport batch (atom nil)]
@@ -52,3 +53,4 @@
     (actor/set-opts! opts)))
 
 (defmethod actor/build :actor.type/actor [opts] (actor opts))
+(defmethod actor/build :actor.type/group [opts] (group opts))
