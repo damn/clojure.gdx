@@ -1,4 +1,5 @@
 (ns clojure.gdx.scenes.scene2d.actor
+  (:require [clojure.gdx.scenes.scene2d.utils :as utils])
   (:import (com.badlogic.gdx.scenes.scene2d Actor
                                             Touchable)
            (com.badlogic.gdx.math Vector2)))
@@ -65,6 +66,8 @@
     (.setPosition actor x y))
   (when-let [touchable (:actor/touchable opts)]
     (set-touchable! actor touchable))
+  (when-let [f (:click-listener opts)]
+    (.addListener actor (utils/click-listener f)))
   actor)
 
 (defn toggle-visible! [actor]
