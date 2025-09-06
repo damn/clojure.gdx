@@ -1,6 +1,6 @@
 (ns clojure.gdx.scenes.scene2d.ui
   (:require [clojure.gdx.scenes.scene2d :as scene2d]
-            [clojure.gdx.scenes.scene2d :as actor]
+            [clojure.gdx.scenes.scene2d.actor :as actor]
             [clojure.gdx.scenes.scene2d.group :as group])
   (:import (com.badlogic.gdx.scenes.scene2d.ui HorizontalGroup
                                                Stack)))
@@ -9,7 +9,7 @@
   (let [group (scene2d/proxy-group HorizontalGroup [])]
     (when space (.space group (float space)))
     (when pad   (.pad   group (float pad)))
-    (group/set-opts! opts)))
+    (group/set-opts! group opts)))
 
 (defn stack []
   (scene2d/proxy-group Stack []))
