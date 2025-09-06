@@ -1,6 +1,8 @@
 (ns clojure.gdx.graphics.color
   (:import (com.badlogic.gdx.graphics Color)))
 
+(def white Color/WHITE)
+
 (let [mapping {:black       Color/BLACK
                :blue        Color/BLUE
                :brown       Color/BROWN

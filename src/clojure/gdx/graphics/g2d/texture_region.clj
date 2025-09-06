@@ -4,10 +4,3 @@
 (defn dimensions [^TextureRegion texture-region]
   [(.getRegionWidth  texture-region)
    (.getRegionHeight texture-region)])
-
-(defn region [^TextureRegion texture-region x y w h]
-  (TextureRegion. texture-region
-                  (int x)
-                  (int y)
-                  (int w)
-                  (int h)))

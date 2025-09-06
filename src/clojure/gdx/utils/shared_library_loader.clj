@@ -1,11 +1,6 @@
 (ns clojure.gdx.utils.shared-library-loader
-  (:import (com.badlogic.gdx.utils SharedLibraryLoader
-                                   Os)))
+  (:require [clojure.gdx.utils.os :as os])
+  (:import (com.badlogic.gdx.utils SharedLibraryLoader)))
 
-(let [mapping {Os/Android :android
-               Os/IOS     :ios
-               Os/Linux   :linux
-               Os/MacOsX  :mac
-               Os/Windows :windows}]
-  (defn operating-system []
-    (get mapping SharedLibraryLoader/os)))
+(defn operating-system []
+  (os/value->k SharedLibraryLoader/os))
