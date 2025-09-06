@@ -50,6 +50,8 @@
            visible?
            center-position
            position] :as opts}]
+  (assert (map? opts)
+          (str "opts should be a map, given " (pr-str opts)))
   (when id
     (set-user-object! actor id))
   (when name

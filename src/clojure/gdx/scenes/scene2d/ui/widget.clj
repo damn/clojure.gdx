@@ -1,7 +1,5 @@
 (ns clojure.gdx.scenes.scene2d.ui.widget
-  (:import (com.badlogic.gdx.scenes.scene2d.ui Widget)))
+  (:require [clojure.gdx.scenes.scene2d.actor :as actor]))
 
-(defn create [draw]
-  (proxy [Widget] []
-    (draw [batch parent-alpha]
-      (draw this batch parent-alpha))))
+(defn set-opts! [widget opts]
+  (actor/set-opts! widget opts))
