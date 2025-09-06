@@ -25,7 +25,7 @@
 
 (defn widget [opts]
   (proxy [Widget] []
-    (fn [this _batch _parent-alpha]
+    (draw [_batch _parent-alpha]
       (when-let [f (:draw opts)]
         (scene2d/try-draw this f)))))
 
