@@ -3,13 +3,6 @@
                                             Touchable)
            (com.badlogic.gdx.math Vector2)))
 
-(defn create [act draw]
-  (proxy [Actor] []
-    (act [delta]
-      (act this delta))
-    (draw [batch parent-alpha]
-      (draw this batch parent-alpha))))
-
 (defn get-stage [^Actor actor]
   (.getStage actor))
 
