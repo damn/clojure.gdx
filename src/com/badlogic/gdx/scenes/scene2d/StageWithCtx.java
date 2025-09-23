@@ -7,9 +7,9 @@ public class StageWithCtx extends Stage  {
 
   public Object ctx;
 
-	public StageWithCtx (Viewport viewport, Batch batch, Object ctx) {
+	public StageWithCtx (Viewport viewport, Batch batch) {
 		super(viewport, batch);
-    this.ctx = ctx;
+    this.ctx = null;
 	}
 
 }

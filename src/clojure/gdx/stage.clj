@@ -11,13 +11,16 @@
             clojure.scene2d.stage)
   (:import (com.badlogic.gdx.scenes.scene2d StageWithCtx)))
 
-(defn create [viewport batch state]
-  (StageWithCtx. viewport batch state))
+(defn create [viewport batch]
+  (StageWithCtx. viewport batch nil))
 
 (extend-type StageWithCtx
   clojure.scene2d.stage/Stage
+  (set-ctx! [this ctx]
+    (set! (.ctx this) ctx))
+
   (get-ctx [this]
-    @(.ctx this))
+    (.ctx this))
 
   (act! [this]
     (.act this))
