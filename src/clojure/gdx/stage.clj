@@ -12,7 +12,7 @@
   (:import (com.badlogic.gdx.scenes.scene2d StageWithCtx)))
 
 (defn create [viewport batch]
-  (StageWithCtx. viewport batch nil))
+  (StageWithCtx. viewport batch))
 
 (extend-type StageWithCtx
   clojure.scene2d.stage/Stage
