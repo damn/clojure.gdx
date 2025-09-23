@@ -1,5 +1,5 @@
 (ns clojure.gdx.application
-  (:require [clojure.application]
+  (:require [clojure.application :as application]
             [clojure.audio]
             [clojure.audio.sound]
             [clojure.disposable]
@@ -54,37 +54,25 @@
   (.set Configuration/GLFW_LIBRARY_NAME "glfw_async"))
 
 (defn- ->ApplicationListener
-  [{:keys [create
-           dispose
-           render
-           resize
-           pause
-           resume]
-    :as listener}]
-  (assert (and create
-               dispose
-               render
-               resize
-               pause
-               resume)
-          (str "Cant find all functions: (keys listener): " (pr-str (keys listener))))
+  [listener]
   (reify ApplicationListener
     (create [_]
-      (create {:ctx/app      Gdx/app
-               :ctx/audio    Gdx/audio
-               :ctx/files    Gdx/files
-               :ctx/graphics Gdx/graphics
-               :ctx/input    Gdx/input}))
+      (application/create listener
+                          {:ctx/app      Gdx/app
+                           :ctx/audio    Gdx/audio
+                           :ctx/files    Gdx/files
+                           :ctx/graphics Gdx/graphics
+                           :ctx/input    Gdx/input}))
     (dispose [_]
-      (dispose))
+      (application/dispose listener))
     (render [_]
-      (render))
+      (application/render listener))
     (resize [_ width height]
-      (resize width height))
+      (application/resize listener width height))
     (pause [_]
-      (pause))
+      (application/pause listener))
     (resume [_]
-      (resume))))
+      (application/resume listener))))
 
 (defn- set-window-config-option! [^Lwjgl3WindowConfiguration object k v]
   (case k
