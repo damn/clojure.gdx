@@ -1,9 +1,9 @@
 (ns clojure.gdx.application-test
   (:require clojure.application
-            clojure.gdx.application))
+            [com.badlogic.gdx.backends.lwjgl3.application :as lwjgl3-application]))
 
 (defn -main []
-  (clojure.gdx.application/start!
+  (lwjgl3-application/start!
    {:listener (reify clojure.application/Listener
                 (create [_ context]
                   (println"create!"))
@@ -11,11 +11,13 @@
                   (println "dispose!"))
                 (pause [_])
                 (render [_]
-                  (println "render!"))
+                  #_(println "render!"))
                 (resize [_ width height]
                   (println "resize!"))
                 (resume [_]))
     :config {:title "Fooz Baaz"
              :windowed-mode {:width 800
                              :height 600}
-             :foreground-fps 60}}))
+             :foreground-fps 60
+             :mac {:glfw-async? true
+                   :taskbar-icon nil}}}))
