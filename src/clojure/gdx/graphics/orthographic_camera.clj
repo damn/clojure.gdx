@@ -62,9 +62,9 @@
 (defn calculate-zoom
   "calculates the zoom value for camera to see all the 4 points."
   [camera & {:keys [left top right bottom]}]
-  (let [viewport-width  (cam/viewport-width  camera)
-        viewport-height (cam/viewport-height camera)
-        [px py] (cam/position camera)
+  (let [viewport-width  (viewport-width  camera)
+        viewport-height (viewport-height camera)
+        [px py] (position camera)
         px (float px)
         py (float py)
         leftx (float (left 0))
