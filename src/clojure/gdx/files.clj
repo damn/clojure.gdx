@@ -1,4 +1,5 @@
-(ns clojure.gdx.files)
+(ns clojure.gdx.files
+  (:import (com.badlogic.gdx Files)))
 
-(defprotocol Files
-  (internal [_ path]))
+(defn internal [^Files files path]
+  (.internal files path))

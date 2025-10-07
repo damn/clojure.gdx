@@ -1,4 +1,8 @@
-(ns clojure.gdx.audio.sound)
+(ns clojure.gdx.audio.sound
+  (:import (com.badlogic.gdx.audio Sound)))
 
-(defprotocol Sound
-  (play! [_]))
+(defn play! [^Sound sound]
+  (.play sound))
+
+(defn dispose! [^Sound sound]
+  (.dispose sound))
