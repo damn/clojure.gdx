@@ -1,5 +1,9 @@
 (ns clojure.gdx.maps.map-properties
+  (:refer-clojure :exclude [get])
   (:import (com.badlogic.gdx.maps MapProperties)))
+
+(defn get [^MapProperties props k]
+  (.get props k))
 
 (defn add! [^MapProperties map-properties m]
   (doseq [[k v] m]
@@ -13,3 +17,6 @@
 (defn ->clj [^MapProperties map-properties]
   (zipmap (.getKeys   map-properties)
           (.getValues map-properties)))
+
+(defn put-all! [^MapProperties map-properties other-properties]
+  (.putAll map-properties other-properties))

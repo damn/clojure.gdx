@@ -5,18 +5,10 @@
 (defn create
   ([^Texture texture]
    (TextureRegion. texture))
-  ([^Texture texture [x y w h]]
-   (TextureRegion. texture
-                   (int x)
-                   (int y)
-                   (int w)
-                   (int h)))
+  ([texture [x y w h]]
+   (create texture x y w h))
   ([^Texture texture x y w h]
-   (TextureRegion. texture
-                   (int x)
-                   (int y)
-                   (int w)
-                   (int h))))
+   (TextureRegion. texture (int x) (int y) (int w) (int h))))
 
 (defn dimensions [^TextureRegion texture-region]
   [(.getRegionWidth  texture-region)

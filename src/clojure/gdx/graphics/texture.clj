@@ -8,5 +8,8 @@
 (defmethod create Pixmap [^Pixmap pixmap]
   (Texture. pixmap))
 
+(defmethod create String [^String path]
+  (Texture. path))
+
 (defmethod create FileHandle [^FileHandle file-handle]
   (Texture. file-handle))

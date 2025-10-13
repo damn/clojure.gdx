@@ -1,17 +1,21 @@
 (ns clojure.gdx.graphics.g2d.bitmap-font
   (:import (com.badlogic.gdx.graphics.g2d BitmapFont)))
 
-(defn line-height
-  "Returns the line height, which is the distance from one line of text to the next."
-  [^BitmapFont font]
+(defn line-height [^BitmapFont font]
   (.getLineHeight font))
 
-(defn data
-  "Gets the underlying {@link BitmapFontData} for this BitmapFont."
-  [^BitmapFont font]
+(defn data [^BitmapFont font]
   (.getData font))
 
-(defn set-use-integer-positions!
-  "Specifies whether to use integer positions. Default is to use them so filtering doesn't kick in as badly."
-  [^BitmapFont font boolean]
-  (.setUseIntegerPositions font boolean))
+(defn draw! [^BitmapFont font batch text x y target-width align wrap?]
+  (.draw font
+         batch
+         text
+         (float x)
+         (float y)
+         (float target-width)
+         align
+         wrap?))
+
+(defn use-integer-positions! [^BitmapFont font use-integer-positions?]
+  (.setUseIntegerPositions font use-integer-positions?))
