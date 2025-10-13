@@ -17,5 +17,5 @@
          align
          wrap?))
 
-(defn use-integer-positions! [^BitmapFont font use-integer-positions?]
+(defn set-use-integer-positions! [^BitmapFont font use-integer-positions?]
   (.setUseIntegerPositions font use-integer-positions?))
